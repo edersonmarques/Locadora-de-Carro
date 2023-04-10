@@ -13,9 +13,16 @@ struct carro {
 
 void listarDisponiveis(struct carro lista_carros[], int *numero_carros) {
     int contador;
+    system("clear");
+    printf("Carros disponíveis: \n\n");
     for (contador = 0; contador < *numero_carros; contador ++) {
-        lista_carros[contador];
+        if (!lista_carros[contador].alugado) {
+            printf("Carro %d - [marca: %s, modelo: %s, placa: %s, valor: %f, ]\n\n" , contador + 1, lista_carros[contador].marca, lista_carros[contador].modelo, lista_carros[contador].placa, lista_carros[contador].valor);
+        }
     }
+
+    printf("Digite enter para continuar: ");
+    scanf(" %*[^\n]s");
 }
 
 void gerarMenu() {
@@ -43,6 +50,7 @@ void aquisicaoCarro(struct carro lista_carros[], int *numero_carros) {
     printf("Digite o valor do carro: ");
     scanf("%f", &lista_carros[*numero_carros].valor);
     lista_carros[*numero_carros].alugado = 0;
+    *numero_carros = *numero_carros + 1;
 
 }
 
@@ -68,7 +76,7 @@ int main() {
                     aquisicaoCarro(lista_carros, &numero_carros);
                 } else {
                     printf("O limite de carros foi atingido. \nPressione enter para continuar. ");
-                    scanf("%*[^\n]s");
+                    scanf(" %*[^\n]s");
                 }
                 break;
 
