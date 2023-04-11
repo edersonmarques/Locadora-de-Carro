@@ -1,23 +1,38 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #define numero_maximo_carros 30
 
 struct carro {
         char marca[20];
         char modelo[20];
         char placa[10];
+        char cor[10];
         float valor;
         int alugado;
         
 };
+
+void alugarCarro(struct carro lista_carros[], int numero_carros, char modelo[20]) {
+    int contador;
+    for (contador = 0; contador < numero_carros; contador ++) {
+        if ((strcmp(modelo, lista_carros[contador].modelo) == 0) && (lista_carros[contador].alugado == 0)) {
+            lista_carros[contador].alugado = 1;
+            return;
+        } else {
+            printf("Não existe um carro deste modelo disponível, desculpe. \nDigite enter para continuar");
+            scanf(" %*[^\n]s");
+        }
+    }
+}
 
 void listarDisponiveis(struct carro lista_carros[], int *numero_carros) {
     int contador;
     system("clear");
     printf("Carros disponíveis: \n\n");
     for (contador = 0; contador < *numero_carros; contador ++) {
-        if (!lista_carros[contador].alugado) {
-            printf("Carro %d - [marca: %s, modelo: %s, placa: %s, valor: %f, ]\n\n" , contador + 1, lista_carros[contador].marca, lista_carros[contador].modelo, lista_carros[contador].placa, lista_carros[contador].valor);
+        if (lista_carros[contador].alugado == 0) {
+            printf("Carro %d - [marca: %s, modelo: %s, placa: %s, cor: %s, valor: %f]\n\n" , contador + 1, lista_carros[contador].marca, lista_carros[contador].modelo, lista_carros[contador].placa, lista_carros[contador].cor, lista_carros[contador].valor);
         }
     }
 
@@ -46,6 +61,9 @@ void aquisicaoCarro(struct carro lista_carros[], int *numero_carros) {
     scanf("%*[^\n]");
     printf("Digite a placa do carro: ");
     scanf(" %9s", lista_carros[*numero_carros].placa);
+    scanf("%*[^\n]");
+    printf("Digite a cor do carro: ");
+    scanf(" %9s", lista_carros[*numero_carros].cor);
     scanf("%*[^\n]");
     printf("Digite o valor do carro: ");
     scanf("%f", &lista_carros[*numero_carros].valor);
@@ -79,7 +97,15 @@ int main() {
                     scanf(" %*[^\n]s");
                 }
                 break;
-
+            case 6:
+                system("clear");
+                char modelo[20];
+                
+                printf("Digite o modelo do carro que deseja alugar: ");
+                scanf(" %19[^\n]s", modelo);
+                scanf("%*[^\n]s");
+                alugarCarro(lista_carros, numero_carros, modelo);
+                break;
 
             default:
                 break;
