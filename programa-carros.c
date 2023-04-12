@@ -20,10 +20,16 @@ void alugarCarro(struct carro lista_carros[], int numero_carros, char modelo[20]
             lista_carros[contador].alugado = 1;
             return;
         } else {
-            printf("Não existe um carro deste modelo disponível, desculpe. \nDigite enter para continuar");
-            scanf(" %*[^\n]s");
+            printf("Não existe um carro deste modelo disponível, presione ENTER para continuar.   ");
+            scanf("%*c");
+            getchar();
+            return;
         }
     }
+}
+
+void devolverCarro(struct carro lista_carros[], int *numero_carros, char modelo[20]) {
+
 }
 
 void listarDisponiveis(struct carro lista_carros[], int *numero_carros) {
@@ -37,7 +43,8 @@ void listarDisponiveis(struct carro lista_carros[], int *numero_carros) {
     }
 
     printf("Digite enter para continuar: ");
-    scanf(" %*[^\n]s");
+    scanf("%*c");
+    getchar();
 }
 
 void gerarMenu() {
@@ -53,6 +60,7 @@ void gerarMenu() {
 }
 
 void aquisicaoCarro(struct carro lista_carros[], int *numero_carros) {
+    system("clear");
     printf("Digite a marca do carro: ");
     scanf(" %19s", lista_carros[*numero_carros].marca);
     scanf("%*[^\n]");
@@ -93,14 +101,15 @@ int main() {
                 if (numero_carros < numero_maximo_carros) {
                     aquisicaoCarro(lista_carros, &numero_carros);
                 } else {
+                    system("clear");
                     printf("O limite de carros foi atingido. \nPressione enter para continuar. ");
-                    scanf(" %*[^\n]s");
+                    scanf("%*c");
+                    getchar();
                 }
                 break;
             case 6:
                 system("clear");
                 char modelo[20];
-                
                 printf("Digite o modelo do carro que deseja alugar: ");
                 scanf(" %19[^\n]s", modelo);
                 scanf("%*[^\n]s");
