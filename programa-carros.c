@@ -14,12 +14,12 @@ struct carro {
 };
 
 void alugarCarro(struct carro lista_carros[], int numero_carros, char modelo[20]) {
-    int contador;
-    for (contador = 0; contador < numero_carros; contador ++) {
-        if ((strcmp(modelo, lista_carros[contador].modelo) == 0) && (lista_carros[contador].alugado == 0)) {
-            lista_carros[contador].alugado = 1;
+    int posicao;
+    for (posicao = 0; posicao < numero_carros; posicao ++) {
+        if ((strcmp(modelo, lista_carros[posicao].modelo) == 0) && (lista_carros[posicao].alugado == 0)) {
+            lista_carros[posicao].alugado = 1;
             return;
-        } else {
+        } else if (posicao == numero_carros) {
             printf("Não existe um carro deste modelo disponível, presione ENTER para continuar.   ");
             scanf("%*c");
             getchar();
@@ -28,21 +28,41 @@ void alugarCarro(struct carro lista_carros[], int numero_carros, char modelo[20]
     }
 }
 
-void devolverCarro(struct carro lista_carros[], int *numero_carros, char modelo[20]) {
-
+void devolverCarro(struct carro lista_carros[], int numero_carros, char placa[10]) {
+    int posicao;
+    for (posicao = 0; posicao < numero_carros; posicao ++) {
+        if (strcmp(lista_carros[posicao].placa, placa) == 0) {
+            lista_carros[posicao].alugado = 0;
+            return;
+        }
+    }
 }
 
 void listarDisponiveis(struct carro lista_carros[], int *numero_carros) {
-    int contador;
+    int posicao;
     system("clear");
     printf("Carros disponíveis: \n\n");
-    for (contador = 0; contador < *numero_carros; contador ++) {
-        if (lista_carros[contador].alugado == 0) {
-            printf("Carro %d - [marca: %s, modelo: %s, placa: %s, cor: %s, valor: %f]\n\n" , contador + 1, lista_carros[contador].marca, lista_carros[contador].modelo, lista_carros[contador].placa, lista_carros[contador].cor, lista_carros[contador].valor);
+    for (posicao = 0; posicao < *numero_carros; posicao ++) {
+        if (lista_carros[posicao].alugado == 0) {
+            printf("Carro %d - [marca: %s, modelo: %s, placa: %s, cor: %s, valor: %f]\n\n" , posicao + 1, lista_carros[posicao].marca, lista_carros[posicao].modelo, lista_carros[posicao].placa, lista_carros[posicao].cor, lista_carros[posicao].valor);
         }
     }
 
-    printf("Digite enter para continuar: ");
+    printf("Pressione ENTER para continuar: ");
+    scanf("%*c");
+    getchar();
+}
+
+void listarPorModelo(struct carro lista_carros[], int numero_carros, char modelo[20]) {
+    system("clear");
+    int posicao;
+    printf("Os carros do modelo %s são: \n\n", modelo);
+    for (posicao = 0; posicao < numero_carros; posicao ++) {
+        if (strcmp(lista_carros[posicao].modelo, modelo) == 0) {
+            printf("Carro %d - [marca: %s, modelo: %s, placa: %s, cor: %s, valor: %f]\n\n" , posicao + 1, lista_carros[posicao].marca, lista_carros[posicao].modelo, lista_carros[posicao].placa, lista_carros[posicao].cor, lista_carros[posicao].valor);
+        }
+    }
+    printf("Pressione ENTER para continuar: ");
     scanf("%*c");
     getchar();
 }
@@ -81,7 +101,7 @@ void aquisicaoCarro(struct carro lista_carros[], int *numero_carros) {
 }
 
 void remocaoCarro() {
-
+    return;
 }
 
 int main() {
@@ -96,26 +116,43 @@ int main() {
             case 1:
                 listarDisponiveis(lista_carros, &numero_carros);
                 break;
+            case 2:
+                system("clear");
+                char modelo_listar[20];
+                printf("Digite o modelo dos carros a serem listados: ");
+                scanf(" %s", modelo_listar);
+                listarPorModelo(lista_carros, numero_carros, modelo_listar);
+                break;
+
+            
 
             case 4:
                 if (numero_carros < numero_maximo_carros) {
                     aquisicaoCarro(lista_carros, &numero_carros);
                 } else {
                     system("clear");
-                    printf("O limite de carros foi atingido. \nPressione enter para continuar. ");
+                    printf("O limite de carros foi atingido. \nPressione ENTER para continuar. ");
                     scanf("%*c");
                     getchar();
                 }
                 break;
             case 6:
                 system("clear");
-                char modelo[20];
+                char modelo_alugar[20];
                 printf("Digite o modelo do carro que deseja alugar: ");
-                scanf(" %19[^\n]s", modelo);
+                scanf(" %19s", modelo_alugar);
                 scanf("%*[^\n]s");
-                alugarCarro(lista_carros, numero_carros, modelo);
+                alugarCarro(lista_carros, numero_carros, modelo_alugar);
                 break;
 
+            case 7:
+                system("clear");
+                char placa_devolver[10];
+                printf("Digite a placa do carro a ser devolvido: ");
+                scanf(" %9s", placa_devolver);
+                scanf("%*[^\n]s");
+                devolverCarro(lista_carros, numero_carros, placa_devolver);
+                break;
             default:
                 break;
         }
