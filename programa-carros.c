@@ -25,6 +25,7 @@ void alugarCarro(struct carro lista_carros[], int numero_carros, char modelo[20]
             getchar();
             return;
         }
+        
     }
 }
 
@@ -65,6 +66,26 @@ void listarPorModelo(struct carro lista_carros[], int numero_carros, char modelo
     printf("Pressione ENTER para continuar: ");
     scanf("%*c");
     getchar();
+}
+
+void exibirStatus(struct carro lista_carros[], int numero_carros, char placa[10]) {
+    int posicao;
+    system("clear");
+    for (posicao = 0; posicao < numero_carros; posicao ++) {
+        if (strcmp(lista_carros[posicao].placa, placa) == 0) {
+            if (lista_carros[posicao].alugado) {
+                printf("O carro de placa %s não está disponível para alugar.", placa);   
+            } else {
+                printf("O carro de placa %s está disponível para alugar.", placa);
+            }
+        } else if (posicao == numero_carros) {
+            printf("Não existe um carro de placa %s no sistema.", placa);
+        }
+        
+    }
+        printf("\n\nPressione ENTER para continuar.");
+        scanf("%*c");
+        getchar();
 }
 
 void gerarMenu() {
@@ -120,11 +141,17 @@ int main() {
                 system("clear");
                 char modelo_listar[20];
                 printf("Digite o modelo dos carros a serem listados: ");
-                scanf(" %s", modelo_listar);
+                scanf(" %19s", modelo_listar);
                 listarPorModelo(lista_carros, numero_carros, modelo_listar);
                 break;
-
-            
+            case 3:
+                system("clear");
+                char placa_exibir[10];
+                printf("Digite a placa do carro que você deseja consultar o status: ");
+                scanf(" %9s", placa_exibir);
+                scanf("%*[^\n]s");
+                exibirStatus(lista_carros, numero_carros, placa_exibir);
+                break;
 
             case 4:
                 if (numero_carros < numero_maximo_carros) {
