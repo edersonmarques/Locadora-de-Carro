@@ -39,11 +39,11 @@ void devolverCarro(struct carro lista_carros[], int numero_carros, char placa[10
     }
 }
 
-void listarDisponiveis(struct carro lista_carros[], int *numero_carros) {
+void listarDisponiveis(struct carro lista_carros[], int numero_carros) {
     int posicao;
     system("clear");
     printf("Carros disponíveis: \n\n");
-    for (posicao = 0; posicao < *numero_carros; posicao ++) {
+    for (posicao = 0; posicao < numero_carros; posicao ++) {
         if (lista_carros[posicao].alugado == 0) {
             printf("Carro %d - [marca: %s, modelo: %s, placa: %s, cor: %s, valor: %f]\n\n" , posicao + 1, lista_carros[posicao].marca, lista_carros[posicao].modelo, lista_carros[posicao].placa, lista_carros[posicao].cor, lista_carros[posicao].valor);
         }
@@ -121,7 +121,21 @@ void aquisicaoCarro(struct carro lista_carros[], int *numero_carros) {
 
 }
 
-void remocaoCarro() {
+void remocaoCarro(struct carro lista_carros[], char placa[10], int *numero_carros) {
+    int posicao;
+
+    for (posicao = 0; posicao < *numero_carros; posicao ++) {
+        if ((strcmp(lista_carros[posicao].placa, placa) == 0)) {
+            lista_carros[posicao].alugado = lista_carros[*numero_carros - 1].alugado;
+            strcpy(lista_carros[posicao].cor, lista_carros[*numero_carros - 1].cor);
+            strcpy(lista_carros[posicao].marca, lista_carros[*numero_carros - 1].marca);
+            strcpy(lista_carros[posicao].modelo, lista_carros[*numero_carros - 1].modelo);
+            strcpy(lista_carros[posicao].placa, lista_carros[*numero_carros - 1].placa);
+            lista_carros[posicao].valor = lista_carros[*numero_carros - 1].valor;
+            *numero_carros = *numero_carros - 1;
+            return;
+        }
+    }
     return;
 }
 
@@ -135,7 +149,7 @@ int main() {
         scanf("%d", &entrada_usuario);
         switch (entrada_usuario) {
             case 1:
-                listarDisponiveis(lista_carros, &numero_carros);
+                listarDisponiveis(lista_carros, numero_carros);
                 break;
             case 2:
                 system("clear");
@@ -162,6 +176,14 @@ int main() {
                     scanf("%*c");
                     getchar();
                 }
+                break;
+            case 5:
+                system("clear");
+                char placa_remover[10];
+                printf("Digite a placa do carro a ser removido: ");
+                scanf(" %9s", placa_remover);
+                scanf("%*[^\n]");
+                remocaoCarro(lista_carros, placa_remover, &numero_carros);
                 break;
             case 6:
                 system("clear");
